@@ -17,18 +17,17 @@ import javax.inject.Inject
 
 class MoviesGuideViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    var page = 1
-    var searchPage = 1
-    var isLastPage = false
-    var isSearchLastPage = false
-    var isSearchNewQuery = false
-    var searchQuery = ""
+    private var page = 1
+    private var searchPage = 1
+    private var isLastPage = false
+    private var isSearchLastPage = false
+    private var searchQuery = ""
     var state = MovieState.DETAILS
+
     val movieResults: LiveData<ResponseState>
         get() = _moviesResult
     val searchMovieResults: LiveData<ResponseState>
         get() = _searchMovieResults
-
     private val _searchMovieResults = MutableLiveData<ResponseState>()
     private val _moviesResult = MutableLiveData<ResponseState>()
     private val _moviesList = ArrayList<MoviesResult>()
@@ -57,14 +56,13 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
         }
     }
 
-    fun getSearchView(query: String, isNewQuery: Boolean = false) {
-        state = MovieState.SEARCH
-        isSearchNewQuery = isNewQuery
-        searchQuery = query
+    fun getMovieSearchResult(query: String, isNewQuery: Boolean = false) {
         if (isNewQuery) {
             searchPage = 1
             _searchResultList.clear()
         }
+        state = MovieState.SEARCH
+        searchQuery = query
         searchQuery(query)
     }
 
@@ -96,7 +94,7 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
         repository.saveMovie(movieEntity)
     }
 
-    private val _bookmarksData = repository.getMoviesFromLocal()
+    private val _bookmarksData = repository.getMoviesFromBookmark()
 
     val bookmarksData: LiveData<List<MovieEntity>>
         get() = _bookmarksData
@@ -107,7 +105,7 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
             getMoviesPlayingNow()
         } else {
             searchPage++
-            getSearchView(searchQuery)
+            getMovieSearchResult(searchQuery)
         }
     }
 

@@ -104,7 +104,7 @@ class MovieGuideActivity : AppCompatActivity(), MoviesVerticalListAdapter.RVItem
 
     private fun getSearchQueries(query: String) {
         if (provider.getNetworkState().hasInternet()) {
-            moviesGuideViewModel.getSearchView(query, true)
+            moviesGuideViewModel.getMovieSearchResult(query, true)
         } else {
             showNoInternetConnectivity()
         }

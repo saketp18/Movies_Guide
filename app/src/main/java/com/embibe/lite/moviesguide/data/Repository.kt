@@ -6,10 +6,7 @@ import com.embibe.lite.moviesguide.data.local.entity.MovieEntity
 import com.embibe.lite.moviesguide.data.remote.MoviesService
 import javax.inject.Inject
 
-class Repository @Inject constructor(private val moviesService: MoviesService) {
-
-    @Inject
-    lateinit var moviesDao: MovieDao
+class Repository @Inject constructor(private val moviesService: MoviesService, val moviesDao: MovieDao) {
 
     suspend fun getMoviesPlayingNow(page: Int) = moviesService.getMoviesPlayingNow(BuildConfig.API_KEY, page)
 
@@ -17,5 +14,5 @@ class Repository @Inject constructor(private val moviesService: MoviesService) {
 
     suspend fun saveMovie(movieEntity: MovieEntity) = moviesDao.saveMovie(movieEntity)
 
-    fun getMoviesFromLocal() = moviesDao.loadMovies()
+    fun getMoviesFromBookmark() = moviesDao.loadMovies()
 }
