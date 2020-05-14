@@ -2,22 +2,22 @@
 Movies Guide app
 
 Features of app
-[X] Fetch details for movies playing now.
-[X] Search movies based on keywords
-[X] Support on different orientations
-[X] Bookmark movies
+[x] Fetch details for movies playing now.
+[x] Search movies based on keywords
+[x] Support on different orientations
+[x] Bookmark movies
 
 Architecture used: MVVM
 
 Components used to acheive:
-[X] Coroutines
-[X] Livedata
-[X] Dagger2
-[X] DataBinding
-[X] Recyclerview
-[X] Retrofit 2
-[X] Gson
-[X] Kotlin
-[X] Proguard
+[x] Coroutines
+[x] Livedata
+[x] Dagger2
+[x] DataBinding
+[x] Recyclerview
+[x] Retrofit 2
+[x] Gson
+[x] Kotlin
+[x] Proguard
 
 
