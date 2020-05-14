@@ -5,30 +5,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.embibe.lite.moviesguide.data.models.MoviesResult
 import com.embibe.lite.moviesguide.ui.movieslist.viewholders.MoviesItemViewHolder
 
-class MoviesListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MoviesListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var moviesResult = ArrayList<MoviesResult>()
-    private var searchMoviesResult = ArrayList<MoviesResult>()
+    private lateinit var moviesResult: List<MoviesResult>
+    private lateinit var searchMoviesResult: List<MoviesResult>
     private var isSearch = false
+    private var isDetails = false
 
     fun setData(movieResults: List<MoviesResult>) {
         isSearch = false
-        this.moviesResult.addAll(movieResults)
+        isDetails = true
+        this.moviesResult = movieResults
         notifyDataSetChanged()
     }
 
-    fun setSearchData(moviesResults: List<MoviesResult>, isNewQuery: Boolean) {
-        if(isNewQuery) {
-            searchMoviesResult.clear()
-        }
+    fun setSearchData(moviesResults: List<MoviesResult>) {
         isSearch = true
-        searchMoviesResult.addAll(moviesResults)
+        isDetails = false
+        searchMoviesResult = moviesResults
         notifyDataSetChanged()
     }
 
-    fun updateSearch() {
+    fun clearSearch() {
         isSearch = false
-        searchMoviesResult.clear()
+        isDetails = true
         notifyDataSetChanged()
     }
 
@@ -37,18 +37,24 @@ class MoviesListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return if(!isSearch) {
-            moviesResult.size
-        } else {
-            searchMoviesResult.size
+        return when {
+            isDetails -> {
+                moviesResult.size
+            }
+            isSearch -> {
+                searchMoviesResult.size
+            }
+            else -> {
+                0
+            }
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if(holder is MoviesItemViewHolder) {
-            if(!isSearch) {
+        if (holder is MoviesItemViewHolder) {
+            if (isDetails) {
                 holder.bind(moviesResult[position])
-            } else {
+            } else if(isSearch){
                 holder.bind(searchMoviesResult[position])
             }
         }

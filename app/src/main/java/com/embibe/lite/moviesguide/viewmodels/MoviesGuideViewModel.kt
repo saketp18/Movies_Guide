@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.embibe.lite.moviesguide.data.Repository
 import com.embibe.lite.moviesguide.data.ResponseState
+import com.embibe.lite.moviesguide.data.local.entity.MovieEntity
+import com.embibe.lite.moviesguide.data.models.MoviesResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,6 +31,8 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
 
     private val _searchMovieResults = MutableLiveData<ResponseState>()
     private val _moviesResult = MutableLiveData<ResponseState>()
+    private val _moviesList = ArrayList<MoviesResult>()
+    private val _searchResultList = ArrayList<MoviesResult>()
 
     fun getMoviesPlayingNow() = viewModelScope.launch(Dispatchers.IO) {
         state = STATE.DETAILS
@@ -40,7 +44,8 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
                         if(it.totalPages == page) {
                             isLastPage = true
                         }
-                        _moviesResult.value = ResponseState.Success(it)
+                        _moviesList.addAll(it.results)
+                        _moviesResult.value = ResponseState.Success(_moviesList)
                     }
                 } else {
                     _moviesResult.value =
@@ -58,6 +63,7 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
         searchQuery = query
         if(isNewQuery) {
             searchPage = 1
+            _searchResultList.clear()
         }
         searchQuery(query)
     }
@@ -71,7 +77,8 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
                         if(page == it.totalPages) {
                             isSearchLastPage
                         }
-                        _searchMovieResults.value = ResponseState.Success(it)
+                        _searchResultList.addAll(it.results)
+                        _searchMovieResults.value = ResponseState.Success(_searchResultList)
                     }
                 } else {
                     _searchMovieResults.value =
@@ -83,6 +90,15 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
         }
     }
 
+    fun saveMovie(moviesResult: MoviesResult) = viewModelScope.launch(Dispatchers.IO) {
+        val movieEntity = MovieEntity(moviesResult.title, moviesResult.posterPath)
+        repository.saveMovie(movieEntity)
+    }
+
+    private val _bookmarksData = repository.getMoviesFromLocal()
+
+    val bookmarksData : LiveData<List<MovieEntity>>
+    get() = _bookmarksData
 
     fun loadMorePages() {
         if(STATE.DETAILS == state) {
@@ -104,6 +120,9 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
 
     fun updateState(stateNew: STATE) {
         state = stateNew
+        if(stateNew == STATE.DETAILS) {
+            _searchResultList.clear()
+        }
     }
 
     enum class STATE {

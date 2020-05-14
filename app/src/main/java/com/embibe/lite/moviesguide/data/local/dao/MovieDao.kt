@@ -11,8 +11,8 @@ import com.embibe.lite.moviesguide.data.local.entity.MovieEntity
 @Dao
 interface MovieDao {
     @Query("SELECT * FROM movies")
-    fun loadPopularArticles(): LiveData<List<MovieEntity>>
+    fun loadMovies(): LiveData<List<MovieEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveArticles(articleEntities: List<MovieEntity>)
+    suspend fun saveMovie(articleEntities: MovieEntity)
 }

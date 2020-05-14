@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.embibe.lite.moviesguide.R
 import com.embibe.lite.moviesguide.data.ResponseState
-import com.embibe.lite.moviesguide.data.models.MoviesResponse
+import com.embibe.lite.moviesguide.data.models.MoviesResult
 import com.embibe.lite.moviesguide.databinding.ActivityMovieGuideBinding
 import com.embibe.lite.moviesguide.di.viewmodelfactory.ViewModelProviderFactory
 import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesListAdapter
@@ -42,8 +42,15 @@ class MovieGuideActivity : AppCompatActivity() {
             ViewModelProvider(this, viewModelFactory).get(MoviesGuideViewModel::class.java)
         setupMovieList()
         setupResultObservers()
-        fetchMoviesPlayingNow()
         handleSearchListeners()
+        if(savedInstanceState == null || (savedInstanceState.getInt("state") == (MoviesGuideViewModel.STATE.DETAILS.ordinal))) {
+            fetchMoviesPlayingNow()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("state", moviesGuideViewModel.state.ordinal)
     }
 
     /**
@@ -54,7 +61,6 @@ class MovieGuideActivity : AppCompatActivity() {
         activityMovieGuideBinding.movieDetailsList.apply {
             adapter = moviesListAdapter
             layoutManager = verticalViewManager
-            hasFixedSize()
         }
         setupRecyclerAnimations()
         setupPaginationListener(verticalViewManager)
@@ -69,9 +75,7 @@ class MovieGuideActivity : AppCompatActivity() {
         activityMovieGuideBinding.movieDetailsList.addOnScrollListener(object :
             PaginationListener(layoutManager) {
 
-            override fun loadMoreItems() {
-                moviesGuideViewModel.loadMorePages()
-            }
+            override fun loadMoreItems() = moviesGuideViewModel.loadMorePages()
 
             override val isLastPage: Boolean
                 get() = moviesGuideViewModel.isLastPages()
@@ -125,13 +129,11 @@ class MovieGuideActivity : AppCompatActivity() {
     }
 
     private fun updateUi(responseState: ResponseState.Success) {
-        val data = responseState.data as MoviesResponse
-        moviesListAdapter.setData(data.results)
+        moviesListAdapter.setData(responseState.data as List<MoviesResult>)
     }
 
     private fun updateSearchUi(responseState: ResponseState.Success) {
-        val data = responseState.data as MoviesResponse
-        moviesListAdapter.setSearchData(data.results, moviesGuideViewModel.isSearchNewQuery)
+        moviesListAdapter.setSearchData(responseState.data as List<MoviesResult>)
     }
 
     private fun someThingWentWrong(responseState: ResponseState.Fail) {
@@ -143,7 +145,6 @@ class MovieGuideActivity : AppCompatActivity() {
                 closeErrorLayout()
                 fetchMoviesPlayingNow()
             }
-            //Changes other attributes for error layout
         }
     }
 
@@ -155,7 +156,6 @@ class MovieGuideActivity : AppCompatActivity() {
                 closeErrorLayout()
                 fetchMoviesPlayingNow()
             }
-            //Changes other attributes for error layout
         }
     }
 
@@ -185,8 +185,8 @@ class MovieGuideActivity : AppCompatActivity() {
                     if (searchText != searchFor)
                         return@launch
                     if (searchText.isEmpty()) {
-                        moviesListAdapter.updateSearch()
                         moviesGuideViewModel.updateState(MoviesGuideViewModel.STATE.DETAILS)
+                        moviesListAdapter.clearSearch()
                     } else {
                         getSearchQueries(searchText)
                     }
