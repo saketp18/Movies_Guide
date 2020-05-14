@@ -1,5 +1,6 @@
 package com.embibe.lite.moviesguide.ui.movieslist.viewholders
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -38,6 +39,7 @@ class MoviesItemViewHolder(private var itemMovieDetailsBinding: ItemMovieDetails
     fun bind(movies: MovieEntity) {
         itemMovieDetailsBinding.apply {
             title.text = movies.title
+            bookmark.visibility = View.GONE
             Glide.with(poster.context)
                 .load(BuildConfig.IMAGE_URL.plus(movies.poster))
                 .into(poster)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="GitScope">
-    <option name="data" value="[M: CurrentContentRevision:/Users/saket.poddar/AndroidStudioProjects/MoviesGuide/.idea/GitScope.xml, D: /Users/saket.poddar/AndroidStudioProjects/MoviesGuide/app/src/main/java/com/embibe/lite/moviesguide/data/local/LocalRepositoryImpl.kt]" />
-    <option name="dataJson" value="[&quot;/Users/saket.poddar/AndroidStudioProjects/MoviesGuide/.idea/GitScope.xml&quot;]" />
+    <option name="data" value="[M: CurrentContentRevision:/Users/saket.poddar/AndroidStudioProjects/MoviesGuide/.idea/GitScope.xml, M: CurrentContentRevision:/Users/saket.poddar/AndroidStudioProjects/MoviesGuide/app/src/main/java/com/embibe/lite/moviesguide/ui/movieslist/viewholders/MoviesItemViewHolder.kt, M: CurrentContentRevision:/Users/saket.poddar/AndroidStudioProjects/MoviesGuide/app/src/main/res/layout/activity_movie_guide.xml]" />
+    <option name="dataJson" value="[&quot;/Users/saket.poddar/AndroidStudioProjects/MoviesGuide/.idea/GitScope.xml&quot;,&quot;/Users/saket.poddar/AndroidStudioProjects/MoviesGuide/app/src/main/java/com/embibe/lite/moviesguide/ui/movieslist/viewholders/MoviesItemViewHolder.kt&quot;,&quot;/Users/saket.poddar/AndroidStudioProjects/MoviesGuide/app/src/main/res/layout/activity_movie_guide.xml&quot;]" />
   </component>
 </project>
