@@ -20,8 +20,6 @@ import javax.inject.Singleton
 
 interface AppComponent : AndroidInjector<MoviesApplication> {
 
-    override fun inject(crowdDeliveryApp: MoviesApplication)
-
     @Component.Builder
     interface Builder {
         @BindsInstance
