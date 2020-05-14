@@ -15,6 +15,7 @@ import com.embibe.lite.moviesguide.data.ResponseState
 import com.embibe.lite.moviesguide.data.models.MoviesResult
 import com.embibe.lite.moviesguide.databinding.ActivityMovieGuideBinding
 import com.embibe.lite.moviesguide.di.viewmodelfactory.ViewModelProviderFactory
+import com.embibe.lite.moviesguide.ui.movieslist.adapters.HorizontalAdapter
 import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesListAdapter
 import com.embibe.lite.moviesguide.ui.movieslist.adapters.PaginationListener
 import com.embibe.lite.moviesguide.utils.isInternetAvailable
@@ -124,6 +125,19 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
                     { updateSearchUi(it as ResponseState.Success) },
                     { someThingWentWrong(it as ResponseState.Fail) },
                     { showNoInternetConnectivity() })
+            })
+            bookmarksData.observe(this@MovieGuideActivity, Observer {
+                it?.let {
+                    if(it.isNotEmpty()) {
+                        val horizontalAdapter = HorizontalAdapter()
+                        activityMovieGuideBinding.movieBookmarksDetailsList.apply {
+                            visibility = View.VISIBLE
+                            adapter = horizontalAdapter
+                            layoutManager = LinearLayoutManager(this@MovieGuideActivity, LinearLayoutManager.HORIZONTAL, false)
+                        }
+                        horizontalAdapter.setData(it)
+                    }
+                }
             })
         }
     }

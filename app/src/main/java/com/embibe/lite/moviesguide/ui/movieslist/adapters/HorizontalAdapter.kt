@@ -2,17 +2,25 @@ package com.embibe.lite.moviesguide.ui.movieslist.adapters
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.embibe.lite.moviesguide.data.local.entity.MovieEntity
+import com.embibe.lite.moviesguide.ui.movieslist.viewholders.MoviesItemViewHolder
 
 class HorizontalAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private val bookMarkData = ArrayList<MovieEntity>()
+
+    fun setData(moviesEntity: List<MovieEntity>) {
+        bookMarkData.clear()
+        bookMarkData.addAll(moviesEntity)
     }
 
-    override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        MoviesItemViewHolder.create(parent, null)
+
+    override fun getItemCount(): Int = bookMarkData.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if(holder is MoviesItemViewHolder) {
+            holder.bind(bookMarkData[position])
+        }
     }
 }
