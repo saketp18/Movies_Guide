@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="error_text_size">18sp</dimen>
+    <dimen name="error_text_bottom_margin">80dp</dimen>
+    <dimen name="error_button_bottom_margin">20dp</dimen>
+    <dimen name="list_margin_top">50dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="poster_margin">4dp</dimen>
+    <dimen name="poster_size">100dp</dimen>
+    <dimen name="title_text_size">15sp</dimen>
+    <dimen name="text_margin_vertical">6dp</dimen>
+    <dimen name="text_margin_horizontal">2dp</dimen>
+</resources>

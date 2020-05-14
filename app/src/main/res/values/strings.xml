@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Movies Guide</string>
+    <string name="error_image">No Internet connection</string>
+    <string name="no_internet_description">Ugh! Something’s not right with your internet</string>
+    <string name="error_description">Ugh! Something’s went wrong with server</string>
+    <string name="poster">Poster</string>
+    <string name="close">Close</string>
+    <string name="movie_hint">Search a movie</string>
+</resources>
