@@ -23,5 +23,6 @@ abstract class PaginationListener(private val layoutManager: LinearLayoutManager
     }
 
     protected abstract fun loadMoreItems()
+
     abstract val isLastPage: Boolean
 }

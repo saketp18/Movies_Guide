@@ -3,6 +3,7 @@ package com.embibe.lite.moviesguide.ui.movieslist
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -15,24 +16,28 @@ import com.embibe.lite.moviesguide.data.ResponseState
 import com.embibe.lite.moviesguide.data.models.MoviesResult
 import com.embibe.lite.moviesguide.databinding.ActivityMovieGuideBinding
 import com.embibe.lite.moviesguide.di.viewmodelfactory.ViewModelProviderFactory
-import com.embibe.lite.moviesguide.ui.movieslist.adapters.HorizontalAdapter
-import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesListAdapter
+import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesHorizontalAdapter
+import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesVerticalListAdapter
 import com.embibe.lite.moviesguide.ui.movieslist.adapters.PaginationListener
-import com.embibe.lite.moviesguide.utils.isInternetAvailable
+import com.embibe.lite.moviesguide.utils.MovieState
 import com.embibe.lite.moviesguide.viewmodels.MoviesGuideViewModel
+import com.embibe.lite.moviesguide.utils.connectivity.base.ConnectivityProvider
 import dagger.android.AndroidInjection
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickListener {
+/**
+ * Landing Activity for movie details.
+ */
+class MovieGuideActivity : AppCompatActivity(), MoviesVerticalListAdapter.RVItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProviderFactory
     lateinit var moviesGuideViewModel: MoviesGuideViewModel
-    lateinit var activityMovieGuideBinding: ActivityMovieGuideBinding
-    private val moviesListAdapter = MoviesListAdapter(this)
+    private val moviesListAdapter = MoviesVerticalListAdapter(this)
+    private lateinit var activityMovieGuideBinding: ActivityMovieGuideBinding
+    private val provider: ConnectivityProvider by lazy { ConnectivityProvider.createProvider(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -44,14 +49,11 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
         setupMovieList()
         setupResultObservers()
         handleSearchListeners()
-        if(savedInstanceState == null || (savedInstanceState.getInt("state") == (MoviesGuideViewModel.STATE.DETAILS.ordinal))) {
+        if (moviesGuideViewModel.isMovieListEmpty()) {
             fetchMoviesPlayingNow()
+        } else {
+            moviesGuideViewModel.notifyMoviesData()
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("state", moviesGuideViewModel.state.ordinal)
     }
 
     /**
@@ -93,7 +95,7 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
     }
 
     private fun fetchMoviesPlayingNow() {
-        if (isInternetAvailable(this)) {
+        if (provider.getNetworkState().hasInternet()) {
             moviesGuideViewModel.getMoviesPlayingNow()
         } else {
             showNoInternetConnectivity()
@@ -101,7 +103,7 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
     }
 
     private fun getSearchQueries(query: String) {
-        if (isInternetAvailable(this)) {
+        if (provider.getNetworkState().hasInternet()) {
             moviesGuideViewModel.getSearchView(query, true)
         } else {
             showNoInternetConnectivity()
@@ -128,12 +130,17 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
             })
             bookmarksData.observe(this@MovieGuideActivity, Observer {
                 it?.let {
-                    if(it.isNotEmpty()) {
-                        val horizontalAdapter = HorizontalAdapter()
+                    if (it.isNotEmpty()) {
+                        val horizontalAdapter = MoviesHorizontalAdapter()
+                        val horizontalLayoutManager = LinearLayoutManager(
+                            this@MovieGuideActivity,
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
                         activityMovieGuideBinding.movieBookmarksDetailsList.apply {
                             visibility = View.VISIBLE
                             adapter = horizontalAdapter
-                            layoutManager = LinearLayoutManager(this@MovieGuideActivity, LinearLayoutManager.HORIZONTAL, false)
+                            layoutManager = horizontalLayoutManager
                         }
                         horizontalAdapter.setData(it)
                     }
@@ -183,6 +190,16 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
 
     override fun onBookMarkAdded(position: Int) {
         moviesGuideViewModel.saveMovie(position)
+        Toast.makeText(this, "Bookmark saved", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("state", moviesGuideViewModel.state.ordinal)
+    }
+
+    private fun ConnectivityProvider.NetworkState.hasInternet(): Boolean {
+        return (this as? ConnectivityProvider.NetworkState.ConnectedState)?.hasInternet == true
     }
 
     private fun handleSearchListeners() {
@@ -194,6 +211,9 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchText = newText.toString().trim()
+                if(searchText.isEmpty()) {
+                    moviesListAdapter.clearSearch()
+                }
                 if (searchText == searchFor) {
                     return true
                 }
@@ -203,7 +223,7 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
                     if (searchText != searchFor)
                         return@launch
                     if (searchText.isEmpty()) {
-                        moviesGuideViewModel.updateState(MoviesGuideViewModel.STATE.DETAILS)
+                        moviesGuideViewModel.updateState(MovieState.DETAILS)
                         moviesListAdapter.clearSearch()
                     } else {
                         getSearchQueries(searchText)

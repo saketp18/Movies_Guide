@@ -62,7 +62,7 @@ dependencies {
     //Views
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.android.support:recyclerview-v7:29.0.0'
-    implementation 'com.android.support:cardview-v7:29.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta5'
 
     //Dagger2.0
     def daggerVersion = "2.24"

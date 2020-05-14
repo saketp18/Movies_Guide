@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.embibe.lite.moviesguide.data.local.entity.MovieEntity
 
-
 @Dao
 interface MovieDao {
     @Query("SELECT * FROM movies")

@@ -3,18 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="movieResult"
-            type="com.embibe.lite.moviesguide.data.models.MoviesResult" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/card_margin"
-        android:layout_marginBottom="@dimen/card_margin"
+        android:layout_margin="@dimen/card_margin"
         android:background="@android:color/white">
 
         <ImageView
@@ -34,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/text_margin_horizontal"
             android:layout_marginTop="@dimen/text_margin_vertical"
-            android:text="@{movieResult.title}"
             android:textColor="@android:color/black"
             android:textSize="@dimen/title_text_size"
             app:layout_constraintLeft_toRightOf="@id/poster"
