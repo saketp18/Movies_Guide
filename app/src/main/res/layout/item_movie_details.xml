@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="movieResult"
+            type="com.embibe.lite.moviesguide.data.models.MoviesResult" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/card_margin"
+        android:layout_marginBottom="@dimen/card_margin"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/poster"
+            android:layout_width="@dimen/poster_size"
+            android:layout_height="@dimen/poster_size"
+            android:layout_marginStart="@dimen/poster_margin"
+            android:layout_marginTop="@dimen/poster_margin"
+            android:layout_marginBottom="@dimen/poster_margin"
+            android:contentDescription="@string/poster"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_margin_horizontal"
+            android:layout_marginTop="@dimen/text_margin_vertical"
+            android:text="@{movieResult.title}"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/title_text_size"
+            app:layout_constraintLeft_toRightOf="@id/poster"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Shawshank Redemption" />
+
+        <ImageView
+            android:id="@+id/bookmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@android:drawable/ic_menu_save"
+            android:layout_marginEnd="@dimen/text_margin_horizontal"
+            android:layout_marginBottom="@dimen/poster_margin"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
