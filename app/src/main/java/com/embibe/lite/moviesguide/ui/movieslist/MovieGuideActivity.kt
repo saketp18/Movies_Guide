@@ -25,13 +25,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class MovieGuideActivity : AppCompatActivity() {
+class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProviderFactory
     lateinit var moviesGuideViewModel: MoviesGuideViewModel
     lateinit var activityMovieGuideBinding: ActivityMovieGuideBinding
-    private val moviesListAdapter = MoviesListAdapter()
+    private val moviesListAdapter = MoviesListAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -165,6 +165,10 @@ class MovieGuideActivity : AppCompatActivity() {
 
     private fun closeErrorLayout() {
         activityMovieGuideBinding.errorLayout.errorParent.visibility = View.GONE
+    }
+
+    override fun onBookMarkAdded(position: Int) {
+        moviesGuideViewModel.saveMovie(position)
     }
 
     private fun handleSearchListeners() {

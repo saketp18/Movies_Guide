@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.embibe.lite.moviesguide.data.models.MoviesResult
 import com.embibe.lite.moviesguide.ui.movieslist.viewholders.MoviesItemViewHolder
 
-class MoviesListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MoviesListAdapter(private val rVItemClickListener: RVItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var moviesResult: List<MoviesResult>
     private lateinit var searchMoviesResult: List<MoviesResult>
@@ -33,7 +33,7 @@ class MoviesListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return MoviesItemViewHolder.create(parent)
+        return MoviesItemViewHolder.create(parent, rVItemClickListener)
     }
 
     override fun getItemCount(): Int {
@@ -58,5 +58,9 @@ class MoviesListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.bind(searchMoviesResult[position])
             }
         }
+    }
+
+    interface RVItemClickListener{
+        fun onBookMarkAdded(position: Int)
     }
 }
