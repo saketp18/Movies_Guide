@@ -3,6 +3,7 @@ package com.embibe.lite.moviesguide.ui.movieslist
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
@@ -19,21 +20,24 @@ import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesHorizontalAdapte
 import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesVerticalListAdapter
 import com.embibe.lite.moviesguide.ui.movieslist.adapters.PaginationListener
 import com.embibe.lite.moviesguide.utils.MovieState
-import com.embibe.lite.moviesguide.utils.isInternetAvailable
 import com.embibe.lite.moviesguide.viewmodels.MoviesGuideViewModel
+import com.embibe.lite.moviesguide.utils.connectivity.base.ConnectivityProvider
 import dagger.android.AndroidInjection
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
+/**
+ * Landing Activity for movie details.
+ */
 class MovieGuideActivity : AppCompatActivity(), MoviesVerticalListAdapter.RVItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProviderFactory
     lateinit var moviesGuideViewModel: MoviesGuideViewModel
-    lateinit var activityMovieGuideBinding: ActivityMovieGuideBinding
     private val moviesListAdapter = MoviesVerticalListAdapter(this)
+    private lateinit var activityMovieGuideBinding: ActivityMovieGuideBinding
+    private val provider: ConnectivityProvider by lazy { ConnectivityProvider.createProvider(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -89,7 +93,7 @@ class MovieGuideActivity : AppCompatActivity(), MoviesVerticalListAdapter.RVItem
     }
 
     private fun fetchMoviesPlayingNow() {
-        if (isInternetAvailable(this)) {
+        if (provider.getNetworkState().hasInternet()) {
             moviesGuideViewModel.getMoviesPlayingNow()
         } else {
             showNoInternetConnectivity()
@@ -97,7 +101,7 @@ class MovieGuideActivity : AppCompatActivity(), MoviesVerticalListAdapter.RVItem
     }
 
     private fun getSearchQueries(query: String) {
-        if (isInternetAvailable(this)) {
+        if (provider.getNetworkState().hasInternet()) {
             moviesGuideViewModel.getSearchView(query, true)
         } else {
             showNoInternetConnectivity()
@@ -184,11 +188,16 @@ class MovieGuideActivity : AppCompatActivity(), MoviesVerticalListAdapter.RVItem
 
     override fun onBookMarkAdded(position: Int) {
         moviesGuideViewModel.saveMovie(position)
+        Toast.makeText(this, "Bookmark saved", Toast.LENGTH_SHORT).show()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("state", moviesGuideViewModel.state.ordinal)
+    }
+
+    private fun ConnectivityProvider.NetworkState.hasInternet(): Boolean {
+        return (this as? ConnectivityProvider.NetworkState.ConnectedState)?.hasInternet == true
     }
 
     private fun handleSearchListeners() {

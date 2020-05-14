@@ -27,6 +27,8 @@ Architecture used: MVVM
 - Android Studio
 - Chrome stetho for observing database in app
 
+#### Notes ####
+Boiler plate code for connectivity change listener is added due to deprecation of getActiveNetwork in greater then Android 10.
 
 
 

@@ -22,7 +22,7 @@
         </Constraint>
         <Constraint
             android:id="@+id/movie_bookmarks_details_list"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="visible"
             motion:layout_constraintBottom_toTopOf="@id/movie_details_list"
@@ -45,7 +45,7 @@
         </Constraint>
         <Constraint
             android:id="@+id/movie_bookmarks_details_list"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
             motion:layout_constraintBottom_toTopOf="@id/movie_details_list"

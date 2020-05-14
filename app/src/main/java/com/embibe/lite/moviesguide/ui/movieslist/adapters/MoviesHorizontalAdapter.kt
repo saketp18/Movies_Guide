@@ -5,6 +5,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.embibe.lite.moviesguide.data.local.entity.MovieEntity
 import com.embibe.lite.moviesguide.ui.movieslist.viewholders.MoviesItemViewHolder
 
+/**
+ * There are two adapters. This guy populate members from db. Now you can apply DIFFUTILL Callback to
+ * optimize your adapter, which helps to optimize {@link RecyclerView.Adapter#notifyDataSetChanged()}.
+ */
 class MoviesHorizontalAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val bookMarkData = ArrayList<MovieEntity>()
 

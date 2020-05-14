@@ -31,7 +31,7 @@ class MoviesItemViewHolder(private var itemMovieDetailsBinding: ItemMovieDetails
 
     fun bind(movies: MoviesResult) {
         itemMovieDetailsBinding.apply {
-            movieResult = movies
+            title.text = movies.title
             Glide.with(poster.context)
                 .load(BuildConfig.IMAGE_URL.plus(movies.posterPath))
                 .into(poster)

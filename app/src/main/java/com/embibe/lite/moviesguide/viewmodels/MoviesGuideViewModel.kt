@@ -93,7 +93,7 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
     fun saveMovie(position: Int) = viewModelScope.launch(Dispatchers.IO) {
         val moviesResult = _moviesList[position]
         val movieEntity = MovieEntity(0, moviesResult.title, moviesResult.posterPath)
-        val result = repository.saveMovie(movieEntity)
+        repository.saveMovie(movieEntity)
     }
 
     private val _bookmarksData = repository.getMoviesFromLocal()

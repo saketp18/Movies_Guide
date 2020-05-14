@@ -1,11 +1,9 @@
 package com.embibe.lite.moviesguide.di.modules
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.embibe.lite.moviesguide.BuildConfig
-import com.embibe.lite.moviesguide.MoviesApplication
 import com.embibe.lite.moviesguide.data.local.MovieDataBase
 import com.embibe.lite.moviesguide.data.local.dao.MovieDao
 import com.embibe.lite.moviesguide.data.remote.MoviesService
@@ -17,6 +15,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+/**
+ * This is can be made more modular by keeping one module as network module and second one as
+ * database module
+ */
 @Module
 object AppModule {
 
@@ -37,8 +39,8 @@ object AppModule {
     @JvmStatic
     @Provides
     @Singleton
-    fun provideDatabase(application: Application)
-            = Room.databaseBuilder(application, MovieDataBase::class.java, "db-name").build()
+    fun provideDatabase(application: Application) =
+        Room.databaseBuilder(application, MovieDataBase::class.java, "db-name").build()
 
     @JvmStatic
     @Singleton

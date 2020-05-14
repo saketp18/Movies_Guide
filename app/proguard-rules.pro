@@ -54,3 +54,5 @@
     **[] $VALUES;
     public *;
 }
+
+-keep class com.embibe.lite.moviesguide.data.models.*{*;}
