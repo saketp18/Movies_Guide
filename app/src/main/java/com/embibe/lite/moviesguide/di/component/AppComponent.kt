@@ -3,7 +3,7 @@ package com.embibe.lite.moviesguide.di.component
 import android.app.Application
 import com.embibe.lite.moviesguide.MoviesApplication
 import com.embibe.lite.moviesguide.di.modules.ActivityViewModule
-import com.embibe.lite.moviesguide.di.modules.NetworkModule
+import com.embibe.lite.moviesguide.di.modules.AppModule
 import com.embibe.lite.moviesguide.di.modules.ViewModelFactoryModule
 import dagger.BindsInstance
 import dagger.Component
@@ -16,7 +16,7 @@ import javax.inject.Singleton
     modules = [AndroidSupportInjectionModule::class,
         ActivityViewModule::class,
         ViewModelFactoryModule::class,
-        NetworkModule::class])
+        AppModule::class])
 
 interface AppComponent : AndroidInjector<MoviesApplication> {
 

@@ -18,8 +18,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class NetworkModule() {
+object AppModule {
 
+    @JvmStatic
     @Singleton
     @Provides
     fun httpLoggingInterceptor(): HttpLoggingInterceptor {
@@ -33,17 +34,20 @@ class NetworkModule() {
         return interceptor
     }
 
+    @JvmStatic
     @Provides
     @Singleton
-    fun provideDatabase(context: Application)
-            = Room.databaseBuilder(context, MovieDataBase::class.java, "db-name").build()
+    fun provideDatabase(application: Application)
+            = Room.databaseBuilder(application, MovieDataBase::class.java, "db-name").build()
 
+    @JvmStatic
     @Singleton
     @Provides
     fun providesMovieDao(movieDataBase: MovieDataBase): MovieDao {
         return movieDataBase.movieDao()
     }
 
+    @JvmStatic
     @Provides
     @Singleton
     fun okHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
@@ -52,6 +56,7 @@ class NetworkModule() {
             .build()
     }
 
+    @JvmStatic
     @Provides
     @Singleton
     fun retrofit(okHttpClient: OkHttpClient): Retrofit {
@@ -62,6 +67,7 @@ class NetworkModule() {
             .build()
     }
 
+    @JvmStatic
     @Provides
     @Singleton
     fun moviesService(retrofit: Retrofit): MoviesService {

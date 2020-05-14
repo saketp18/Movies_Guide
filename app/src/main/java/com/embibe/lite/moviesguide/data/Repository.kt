@@ -6,7 +6,10 @@ import com.embibe.lite.moviesguide.data.local.entity.MovieEntity
 import com.embibe.lite.moviesguide.data.remote.MoviesService
 import javax.inject.Inject
 
-class Repository @Inject constructor(private val moviesService: MoviesService, private val moviesDao: MovieDao) {
+class Repository @Inject constructor(private val moviesService: MoviesService) {
+
+    @Inject
+    lateinit var moviesDao: MovieDao
 
     suspend fun getMoviesPlayingNow(page: Int) = moviesService.getMoviesPlayingNow(BuildConfig.API_KEY, page)
 

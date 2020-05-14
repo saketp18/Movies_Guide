@@ -14,5 +14,5 @@ interface MovieDao {
     fun loadMovies(): LiveData<List<MovieEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveMovie(articleEntities: MovieEntity)
+    suspend fun saveMovie(movieEntities: MovieEntity): Long
 }
