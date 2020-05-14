@@ -1,6 +1,9 @@
 # Movies_Guide
 Movies Guide app
 
+#### Demo working of app ####
+![Demo Gif](https://github.com/saketp18/Movies_Guide/blob/development/device_screen.gif)
+
 #### Features of app ####
 - Fetch details for movies playing now via api and paginate it.
 - Search movies based on keywords also load paginated results.
