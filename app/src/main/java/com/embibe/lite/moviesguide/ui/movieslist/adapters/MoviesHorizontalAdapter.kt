@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.embibe.lite.moviesguide.data.local.entity.MovieEntity
 import com.embibe.lite.moviesguide.ui.movieslist.viewholders.MoviesItemViewHolder
 
-class HorizontalAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MoviesHorizontalAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val bookMarkData = ArrayList<MovieEntity>()
 
     fun setData(moviesEntity: List<MovieEntity>) {

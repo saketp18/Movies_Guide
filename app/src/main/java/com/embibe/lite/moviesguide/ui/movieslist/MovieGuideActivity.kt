@@ -15,9 +15,10 @@ import com.embibe.lite.moviesguide.data.ResponseState
 import com.embibe.lite.moviesguide.data.models.MoviesResult
 import com.embibe.lite.moviesguide.databinding.ActivityMovieGuideBinding
 import com.embibe.lite.moviesguide.di.viewmodelfactory.ViewModelProviderFactory
-import com.embibe.lite.moviesguide.ui.movieslist.adapters.HorizontalAdapter
-import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesListAdapter
+import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesHorizontalAdapter
+import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesVerticalListAdapter
 import com.embibe.lite.moviesguide.ui.movieslist.adapters.PaginationListener
+import com.embibe.lite.moviesguide.utils.MovieState
 import com.embibe.lite.moviesguide.utils.isInternetAvailable
 import com.embibe.lite.moviesguide.viewmodels.MoviesGuideViewModel
 import dagger.android.AndroidInjection
@@ -26,13 +27,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickListener {
+class MovieGuideActivity : AppCompatActivity(), MoviesVerticalListAdapter.RVItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProviderFactory
     lateinit var moviesGuideViewModel: MoviesGuideViewModel
     lateinit var activityMovieGuideBinding: ActivityMovieGuideBinding
-    private val moviesListAdapter = MoviesListAdapter(this)
+    private val moviesListAdapter = MoviesVerticalListAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -44,14 +45,9 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
         setupMovieList()
         setupResultObservers()
         handleSearchListeners()
-        if(savedInstanceState == null || (savedInstanceState.getInt("state") == (MoviesGuideViewModel.STATE.DETAILS.ordinal))) {
+        if (moviesGuideViewModel.isMovieListEmpty()) {
             fetchMoviesPlayingNow()
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("state", moviesGuideViewModel.state.ordinal)
     }
 
     /**
@@ -128,12 +124,17 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
             })
             bookmarksData.observe(this@MovieGuideActivity, Observer {
                 it?.let {
-                    if(it.isNotEmpty()) {
-                        val horizontalAdapter = HorizontalAdapter()
+                    if (it.isNotEmpty()) {
+                        val horizontalAdapter = MoviesHorizontalAdapter()
+                        val horizontalLayoutManager = LinearLayoutManager(
+                            this@MovieGuideActivity,
+                            LinearLayoutManager.HORIZONTAL,
+                            false
+                        )
                         activityMovieGuideBinding.movieBookmarksDetailsList.apply {
                             visibility = View.VISIBLE
                             adapter = horizontalAdapter
-                            layoutManager = LinearLayoutManager(this@MovieGuideActivity, LinearLayoutManager.HORIZONTAL, false)
+                            layoutManager = horizontalLayoutManager
                         }
                         horizontalAdapter.setData(it)
                     }
@@ -185,6 +186,11 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
         moviesGuideViewModel.saveMovie(position)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("state", moviesGuideViewModel.state.ordinal)
+    }
+
     private fun handleSearchListeners() {
         val listener: SearchView.OnQueryTextListener = object : SearchView.OnQueryTextListener {
             private var searchFor = ""
@@ -203,7 +209,7 @@ class MovieGuideActivity : AppCompatActivity(), MoviesListAdapter.RVItemClickLis
                     if (searchText != searchFor)
                         return@launch
                     if (searchText.isEmpty()) {
-                        moviesGuideViewModel.updateState(MoviesGuideViewModel.STATE.DETAILS)
+                        moviesGuideViewModel.updateState(MovieState.DETAILS)
                         moviesListAdapter.clearSearch()
                     } else {
                         getSearchQueries(searchText)

@@ -13,8 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/card_margin"
-        android:layout_marginBottom="@dimen/card_margin"
+        android:layout_margin="@dimen/card_margin"
         android:background="@android:color/white">
 
         <ImageView

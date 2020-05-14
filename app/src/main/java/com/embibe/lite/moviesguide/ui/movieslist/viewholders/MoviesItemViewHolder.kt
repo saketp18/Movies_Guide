@@ -4,25 +4,28 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.embibe.lite.moviesguide.BuildConfig
 import com.embibe.lite.moviesguide.R
 import com.embibe.lite.moviesguide.data.local.entity.MovieEntity
 import com.embibe.lite.moviesguide.data.models.MoviesResult
 import com.embibe.lite.moviesguide.databinding.ItemMovieDetailsBinding
-import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesListAdapter
+import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesVerticalListAdapter
 import com.embibe.lite.moviesguide.utils.inflateDataBindingLayout
 
 class MoviesItemViewHolder(private var itemMovieDetailsBinding: ItemMovieDetailsBinding) :
     RecyclerView.ViewHolder(itemMovieDetailsBinding.root) {
 
     companion object {
-        fun create(parent: ViewGroup, rvItemClickListener: MoviesListAdapter.RVItemClickListener?): MoviesItemViewHolder {
-            val vh = MoviesItemViewHolder(parent.inflateDataBindingLayout(R.layout.item_movie_details))
-            vh.itemMovieDetailsBinding.bookmark.setOnClickListener {
-                rvItemClickListener?.onBookMarkAdded(vh.adapterPosition)
+        fun create(
+            parent: ViewGroup,
+            rvItemClickListener: MoviesVerticalListAdapter.RVItemClickListener?
+        ): MoviesItemViewHolder {
+            val viewHolder =
+                MoviesItemViewHolder(parent.inflateDataBindingLayout(R.layout.item_movie_details))
+            viewHolder.itemMovieDetailsBinding.bookmark.setOnClickListener {
+                rvItemClickListener?.onBookMarkAdded(viewHolder.adapterPosition)
             }
-            return vh
+            return viewHolder
         }
     }
 

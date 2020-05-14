@@ -1,6 +1,5 @@
 package com.embibe.lite.moviesguide.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,12 +8,12 @@ import com.embibe.lite.moviesguide.data.Repository
 import com.embibe.lite.moviesguide.data.ResponseState
 import com.embibe.lite.moviesguide.data.local.entity.MovieEntity
 import com.embibe.lite.moviesguide.data.models.MoviesResult
+import com.embibe.lite.moviesguide.utils.MovieState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
-
 
 class MoviesGuideViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
@@ -24,7 +23,7 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
     var isSearchLastPage = false
     var isSearchNewQuery = false
     var searchQuery = ""
-    var state = STATE.DETAILS
+    var state = MovieState.DETAILS
     val movieResults: LiveData<ResponseState>
         get() = _moviesResult
     val searchMovieResults: LiveData<ResponseState>
@@ -36,13 +35,13 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
     private val _searchResultList = ArrayList<MoviesResult>()
 
     fun getMoviesPlayingNow() = viewModelScope.launch(Dispatchers.IO) {
-        state = STATE.DETAILS
+        state = MovieState.DETAILS
         try {
             val response = repository.getMoviesPlayingNow(page)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        if(it.totalPages == page) {
+                        if (it.totalPages == page) {
                             isLastPage = true
                         }
                         _moviesList.addAll(it.results)
@@ -58,11 +57,11 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
         }
     }
 
-    fun getSearchView(query: String, isNewQuery: Boolean = false){
-        state = STATE.SEARCH
+    fun getSearchView(query: String, isNewQuery: Boolean = false) {
+        state = MovieState.SEARCH
         isSearchNewQuery = isNewQuery
         searchQuery = query
-        if(isNewQuery) {
+        if (isNewQuery) {
             searchPage = 1
             _searchResultList.clear()
         }
@@ -75,7 +74,7 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        if(page == it.totalPages) {
+                        if (page == it.totalPages) {
                             isSearchLastPage
                         }
                         _searchResultList.addAll(it.results)
@@ -92,19 +91,18 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
     }
 
     fun saveMovie(position: Int) = viewModelScope.launch(Dispatchers.IO) {
-        val moviesResult = _moviesList.get(position)
+        val moviesResult = _moviesList[position]
         val movieEntity = MovieEntity(0, moviesResult.title, moviesResult.posterPath)
         val result = repository.saveMovie(movieEntity)
-        Log.d("Saket", result.toString())
     }
 
     private val _bookmarksData = repository.getMoviesFromLocal()
 
-    val bookmarksData : LiveData<List<MovieEntity>>
-    get() = _bookmarksData
+    val bookmarksData: LiveData<List<MovieEntity>>
+        get() = _bookmarksData
 
     fun loadMorePages() {
-        if(STATE.DETAILS == state) {
+        if (MovieState.DETAILS == state) {
             page++
             getMoviesPlayingNow()
         } else {
@@ -114,22 +112,21 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
     }
 
     fun isLastPages(): Boolean {
-        return if(STATE.DETAILS == state) {
+        return if (MovieState.DETAILS == state) {
             isLastPage
         } else {
             isSearchLastPage
         }
     }
 
-    fun updateState(stateNew: STATE) {
-        state = stateNew
-        if(stateNew == STATE.DETAILS) {
-            _searchResultList.clear()
-        }
+    fun isMovieListEmpty(): Boolean {
+        return _moviesList.size == 0
     }
 
-    enum class STATE {
-        DETAILS,
-        SEARCH
+    fun updateState(stateNew: MovieState) {
+        state = stateNew
+        if (stateNew == MovieState.DETAILS) {
+            _searchResultList.clear()
+        }
     }
 }

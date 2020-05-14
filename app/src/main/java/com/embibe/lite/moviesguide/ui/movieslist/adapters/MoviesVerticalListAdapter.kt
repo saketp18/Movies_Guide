@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.embibe.lite.moviesguide.data.models.MoviesResult
 import com.embibe.lite.moviesguide.ui.movieslist.viewholders.MoviesItemViewHolder
 
-class MoviesListAdapter(private val rVItemClickListener: RVItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MoviesVerticalListAdapter(private val rVItemClickListener: RVItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var moviesResult: List<MoviesResult>
     private lateinit var searchMoviesResult: List<MoviesResult>
