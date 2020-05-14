@@ -29,9 +29,3 @@ Architecture used: MVVM
 
 #### Notes ####
 Boiler plate code for connectivity change listener is added due to deprecation of getActiveNetwork in greater then Android 10.
-
-
-
-
-
-

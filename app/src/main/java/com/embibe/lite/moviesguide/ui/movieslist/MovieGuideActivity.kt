@@ -51,6 +51,8 @@ class MovieGuideActivity : AppCompatActivity(), MoviesVerticalListAdapter.RVItem
         handleSearchListeners()
         if (moviesGuideViewModel.isMovieListEmpty()) {
             fetchMoviesPlayingNow()
+        } else {
+            moviesGuideViewModel.notifyMoviesData()
         }
     }
 
@@ -209,6 +211,9 @@ class MovieGuideActivity : AppCompatActivity(), MoviesVerticalListAdapter.RVItem
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchText = newText.toString().trim()
+                if(searchText.isEmpty()) {
+                    moviesListAdapter.clearSearch()
+                }
                 if (searchText == searchFor) {
                     return true
                 }

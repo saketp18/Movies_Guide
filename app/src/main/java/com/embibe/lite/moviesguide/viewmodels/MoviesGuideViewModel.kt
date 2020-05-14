@@ -123,6 +123,12 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
         return _moviesList.size == 0
     }
 
+    fun notifyMoviesData() {
+        if(state == MovieState.DETAILS) {
+            _moviesResult.value = ResponseState.Success(_moviesList)
+        }
+    }
+
     fun updateState(stateNew: MovieState) {
         state = stateNew
         if (stateNew == MovieState.DETAILS) {
