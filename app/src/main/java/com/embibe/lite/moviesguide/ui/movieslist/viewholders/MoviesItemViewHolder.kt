@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.embibe.lite.moviesguide.BuildConfig
 import com.embibe.lite.moviesguide.R
 import com.embibe.lite.moviesguide.data.local.entity.MovieEntity
@@ -45,6 +46,7 @@ class MoviesItemViewHolder(private var itemMovieDetailsBinding: ItemMovieDetails
             bookmark.visibility = View.GONE
             Glide.with(poster.context)
                 .load(BuildConfig.IMAGE_URL.plus(movies.poster))
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(poster)
             executePendingBindings()
         }

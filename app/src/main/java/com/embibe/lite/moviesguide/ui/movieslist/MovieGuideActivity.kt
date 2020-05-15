@@ -142,6 +142,7 @@ class MovieGuideActivity : AppCompatActivity(), MoviesVerticalListAdapter.RVItem
                             layoutManager = horizontalLayoutManager
                         }
                         horizontalAdapter.setData(it)
+                        activityMovieGuideBinding.movieBookmarksDetailsList.smoothScrollToPosition(it.size)
                     }
                 }
             })

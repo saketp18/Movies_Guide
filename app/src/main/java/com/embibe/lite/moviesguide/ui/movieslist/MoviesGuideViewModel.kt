@@ -1,5 +1,6 @@
 package com.embibe.lite.moviesguide.ui.movieslist
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class MoviesGuideViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
@@ -23,7 +25,6 @@ class MoviesGuideViewModel @Inject constructor(private val repository: Repositor
     private var isSearchLastPage = false
     private var searchQuery = ""
     var state = MovieState.DETAILS
-
     val movieResults: LiveData<ResponseState>
         get() = _moviesResult
     val searchMovieResults: LiveData<ResponseState>

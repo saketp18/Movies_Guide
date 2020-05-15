@@ -6,13 +6,9 @@
         android:id="@+id/motion"
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@+id/start"
-        motion:motionInterpolator="easeIn">
+        motion:motionInterpolator="linear">
         <OnSwipe
             motion:dragDirection="dragUp"
-            motion:dragScale=".1"
-            motion:maxAcceleration="1"
-            motion:maxVelocity="1"
-            motion:onTouchUp="autoComplete"
             motion:touchAnchorId="@+id/movie_details_list" />
     </Transition>
 
@@ -20,6 +16,18 @@
         <Constraint android:id="@+id/errorLayout">
             <PropertySet motion:visibilityMode="ignore" />
         </Constraint>
+
+        <Constraint
+            android:id="@+id/search_text"
+            style="@style/searchViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/movie_hint"
+            android:inputType="text"
+            android:visibility="visible"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
         <Constraint
             android:id="@+id/movie_bookmarks_details_list"
             android:layout_width="match_parent"
@@ -43,6 +51,17 @@
         <Constraint android:id="@+id/errorLayout">
             <PropertySet motion:visibilityMode="ignore" />
         </Constraint>
+        <Constraint
+            android:id="@+id/search_text"
+            style="@style/searchViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/movie_hint"
+            android:inputType="text"
+            android:visibility="gone"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintRight_toRightOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
         <Constraint
             android:id="@+id/movie_bookmarks_details_list"
             android:layout_width="match_parent"

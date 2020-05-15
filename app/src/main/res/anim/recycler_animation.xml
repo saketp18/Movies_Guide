@@ -2,4 +2,4 @@
 <layoutAnimation xmlns:android="http://schemas.android.com/apk/res/android"
     android:animation="@anim/down_to_up"
     android:animationOrder="normal"
-    android:delay="15%" />
+    android:delay="50%" />

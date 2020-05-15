@@ -13,10 +13,10 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_text"
+            style="@style/searchViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="Friends"
-            android:background="@android:color/white"
             android:focusableInTouchMode="true"
             android:hint="@string/movie_hint"
             android:inputType="text"
