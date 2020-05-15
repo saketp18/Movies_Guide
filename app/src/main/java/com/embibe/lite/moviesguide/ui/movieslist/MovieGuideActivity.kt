@@ -20,7 +20,6 @@ import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesHorizontalAdapte
 import com.embibe.lite.moviesguide.ui.movieslist.adapters.MoviesVerticalListAdapter
 import com.embibe.lite.moviesguide.ui.movieslist.adapters.PaginationListener
 import com.embibe.lite.moviesguide.utils.MovieState
-import com.embibe.lite.moviesguide.viewmodels.MoviesGuideViewModel
 import com.embibe.lite.moviesguide.utils.connectivity.base.ConnectivityProvider
 import dagger.android.AndroidInjection
 import kotlinx.coroutines.delay

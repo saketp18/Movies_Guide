@@ -1,4 +1,4 @@
-package com.embibe.lite.moviesguide.viewmodels
+package com.embibe.lite.moviesguide.ui.movieslist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
