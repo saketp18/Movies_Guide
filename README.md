@@ -29,6 +29,9 @@ Architecture used: MVVM
 - Emulators
 - Android Studio
 - Chrome stetho for observing database in app
+#### Improvements can be done ####
+- Add paging library 
+- Show details of movies in a fragment to demostrate navigation components
 
 #### Notes ####
 Boiler plate code for connectivity change listener is added due to deprecation of getActiveNetwork in greater then Android 10.
