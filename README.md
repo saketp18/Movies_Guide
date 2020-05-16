@@ -8,7 +8,7 @@ Movies Guide app
 - Fetch details for movies playing now via api and paginate it.
 - Search movies based on keywords also load paginated results.
 - Support on different orientations.
-- Bookmark movies.
+- Bookmark movies in horizontal list view.
 
 Architecture used: MVVM
 
@@ -23,7 +23,7 @@ Architecture used: MVVM
 - Gson for incorporating messages from network response.
 - Kotlin
 - Proguard to minify the apk size and obfuscate code.
-- Glide
+- Glide, load images from url and cache images to disk
 
 #### Tools used to develop: ####
 - Emulators
