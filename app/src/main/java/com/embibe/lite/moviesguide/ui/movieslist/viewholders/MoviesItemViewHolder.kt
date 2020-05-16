@@ -35,6 +35,7 @@ class MoviesItemViewHolder(private var itemMovieDetailsBinding: ItemMovieDetails
             title.text = movies.title
             Glide.with(poster.context)
                 .load(BuildConfig.IMAGE_URL.plus(movies.posterPath))
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(poster)
             executePendingBindings()
         }
